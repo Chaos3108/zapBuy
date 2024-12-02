@@ -1,10 +1,25 @@
-const { MongoClient } = require('mongodb');
-require('dotenv').config();
+const mongoose = require('mongoose');
+const express = require('express');
 
-const uri =process.env.DB_URL;
+const app = express();
+app.use(express.json());
 
-MongoClient.connect(uri).then(()=>{
-console.log("connected")
-}).catch((e)=>{
-    console.log("error in connecting the DB"+e)
+const authRouter = require('./routes/authRoute');
+const connectDB = require('./db');
+
+
+app.listen(8000,function (){
+    console.log('server running on '+ 8000)
+});
+app.get('/', function(req,res){
+    res.send("Hello world")
 })
+
+app.use('/user',authRouter)
+connectDB();
+
+
+
+
+
+
